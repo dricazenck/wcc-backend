@@ -5,6 +5,7 @@ import static com.wcc.platform.domain.cms.ApiResourcesFile.COLLABORATOR;
 import static com.wcc.platform.domain.cms.ApiResourcesFile.FOOTER;
 import static com.wcc.platform.domain.cms.ApiResourcesFile.TEAM;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wcc.platform.domain.cms.pages.CodeOfConductPage;
 import com.wcc.platform.domain.cms.pages.CollaboratorPage;
@@ -62,7 +63,7 @@ public class CmsService {
     try {
       final var data = FileUtil.readFileAsString(COLLABORATOR.getFileName());
       return objectMapper.readValue(data, CollaboratorPage.class);
-    } catch (IOException e) {
+    } catch (JsonProcessingException e) {
       throw new PlatformInternalException(e.getMessage(), e);
     }
   }

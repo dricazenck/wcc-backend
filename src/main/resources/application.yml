@@ -8,4 +8,7 @@ springdoc:
     path: /api-docs
   swagger-ui:
     enabled: true
-  paths-to-match: /api/cms/v1/**
+  paths-to-match: /api/**,
+
+surrealdb:
+  url:http://localhost:8000/sql:

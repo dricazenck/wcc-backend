@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wcc.platform.domain.cms.pages.mentorship.MentorshipPage;
 import com.wcc.platform.domain.exceptions.PlatformInternalException;
+import com.wcc.platform.repository.MentorshipResourcesPageRepository;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,10 @@ class MentorshipServiceTest {
   @BeforeEach
   void setUp() {
     objectMapper = Mockito.mock(ObjectMapper.class);
-    service = new MentorshipService(objectMapper);
+    var repository = Mockito.mock(MentorshipResourcesPageRepository.class);
+    when(repository.save(any(), any(), any())).thenReturn(true);
+
+    service = new MentorshipService(objectMapper, repository);
   }
 
   @Test

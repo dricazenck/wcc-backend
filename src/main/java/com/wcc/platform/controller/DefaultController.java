@@ -40,7 +40,7 @@ public class DefaultController {
    *
    * @return "Women Coding Community Platform"
    */
-  @GetMapping("/")
+  @GetMapping("/api/")
   @Operation(summary = "API to retrieve default page")
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<String> helloWorld() {

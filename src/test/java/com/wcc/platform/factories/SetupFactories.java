@@ -1,5 +1,7 @@
 package com.wcc.platform.factories;
 
+import static com.wcc.platform.domain.cms.attributes.ImageType.DESKTOP;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wcc.platform.configuration.ObjectMapperConfig;
@@ -25,6 +27,7 @@ import com.wcc.platform.domain.platform.SocialNetwork;
 import com.wcc.platform.domain.platform.SocialNetworkType;
 import com.wcc.platform.utils.FileUtil;
 import java.util.List;
+import java.util.UUID;
 
 public class SetupFactories {
 
@@ -104,7 +107,7 @@ public class SetupFactories {
         .jobTitle("Job title")
         .companyName("Company name")
         .memberType(type)
-        .images(List.of(new Image("image.png", "alt image", ImageType.DESKTOP)))
+        .images(List.of(new Image(UUID.randomUUID(), "image.png", "alt image", DESKTOP)))
         .network(List.of(new SocialNetwork(SocialNetworkType.LINKEDIN, "collaborator_link")))
         .build();
   }
@@ -119,7 +122,7 @@ public class SetupFactories {
         .jobTitle("Job title")
         .companyName("Company name")
         .memberType(type)
-        .images(List.of(new Image("image.png", "alt image", ImageType.DESKTOP)))
+        .images(List.of(new Image(UUID.randomUUID(), "image.png", "alt image", DESKTOP)))
         .network(List.of(new SocialNetwork(SocialNetworkType.LINKEDIN, "collaborator_link")))
         .build();
   }
@@ -134,13 +137,13 @@ public class SetupFactories {
         .jobTitle("Job title")
         .companyName("Company name")
         .memberType(type)
-        .images(List.of(new Image("image.png", "alt image", ImageType.DESKTOP)))
+        .images(List.of(new Image(UUID.randomUUID(), "image.png", "alt image", DESKTOP)))
         .network(List.of(new SocialNetwork(SocialNetworkType.LINKEDIN, "collaborator_link")))
         .build();
   }
 
   public static Image createImageTest(final ImageType type) {
-    return new Image(type + ".png", "alt image" + type, type);
+    return new Image(UUID.randomUUID(), type + ".png", "alt image" + type, type);
   }
 
   public static Image createImageTest() {

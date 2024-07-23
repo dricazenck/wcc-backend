@@ -25,6 +25,7 @@ import com.wcc.platform.domain.platform.SocialNetworkType;
 import com.wcc.platform.service.CmsService;
 import com.wcc.platform.utils.FileUtil;
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -101,7 +102,8 @@ class AboutControllerTest {
             .jobTitle("Job title")
             .companyName("Company name")
             .memberType(MemberType.COLLABORATOR)
-            .images(List.of(new Image("image.png", "alt image", ImageType.DESKTOP)))
+            .images(
+                List.of(new Image(UUID.randomUUID(), "image.png", "alt image", ImageType.DESKTOP)))
             .network(List.of(new SocialNetwork(SocialNetworkType.LINKEDIN, "collaborator_link")))
             .build();
 
