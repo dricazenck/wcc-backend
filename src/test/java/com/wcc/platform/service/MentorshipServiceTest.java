@@ -1,6 +1,7 @@
 package com.wcc.platform.service;
 
 import static com.wcc.platform.factories.SetupMentorshipFactories.createMentorshipPageTest;
+import static com.wcc.platform.factories.SetupMentorshipFactories.createMentorshipResourcesTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -16,11 +17,8 @@ import com.wcc.platform.repository.MentorshipResourcesPageRepository;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 class MentorshipServiceTest {
   private ObjectMapper objectMapper;
 
@@ -30,7 +28,7 @@ class MentorshipServiceTest {
   void setUp() {
     objectMapper = Mockito.mock(ObjectMapper.class);
     var repository = Mockito.mock(MentorshipResourcesPageRepository.class);
-    when(repository.save(any(), any(), any())).thenReturn(true);
+    when(repository.save(any())).thenReturn(createMentorshipResourcesTest());
 
     service = new MentorshipService(objectMapper, repository);
   }

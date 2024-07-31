@@ -1,6 +1,7 @@
 package com.wcc.platform.factories;
 
 import static com.wcc.platform.domain.cms.attributes.ImageType.DESKTOP;
+import static com.wcc.platform.domain.cms.attributes.ImageType.TABLET;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -90,7 +91,7 @@ public class SetupFactories {
   }
 
   public static Page createPageTest() {
-    return new Page("title", "subtitle", "description");
+    return new Page("title", "subtitle", "description", List.of(createImageTest()));
   }
 
   public static Section createSectionTest() {
@@ -107,7 +108,7 @@ public class SetupFactories {
         .jobTitle("Job title")
         .companyName("Company name")
         .memberType(type)
-        .images(List.of(new Image(UUID.randomUUID(), "image.png", "alt image", DESKTOP)))
+        .images(List.of(createImageTest()))
         .network(List.of(new SocialNetwork(SocialNetworkType.LINKEDIN, "collaborator_link")))
         .build();
   }
@@ -122,7 +123,7 @@ public class SetupFactories {
         .jobTitle("Job title")
         .companyName("Company name")
         .memberType(type)
-        .images(List.of(new Image(UUID.randomUUID(), "image.png", "alt image", DESKTOP)))
+        .images(List.of(createImageTest(DESKTOP)))
         .network(List.of(new SocialNetwork(SocialNetworkType.LINKEDIN, "collaborator_link")))
         .build();
   }
@@ -137,13 +138,13 @@ public class SetupFactories {
         .jobTitle("Job title")
         .companyName("Company name")
         .memberType(type)
-        .images(List.of(new Image(UUID.randomUUID(), "image.png", "alt image", DESKTOP)))
+        .images(List.of(createImageTest(TABLET)))
         .network(List.of(new SocialNetwork(SocialNetworkType.LINKEDIN, "collaborator_link")))
         .build();
   }
 
   public static Image createImageTest(final ImageType type) {
-    return new Image(UUID.randomUUID(), type + ".png", "alt image" + type, type);
+    return new Image(type + ".png", "alt image" + type, type);
   }
 
   public static Image createImageTest() {

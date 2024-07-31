@@ -4,7 +4,6 @@ import static com.wcc.platform.domain.cms.ApiResourcesFile.MENTORSHIP;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wcc.platform.domain.cms.pages.PageType;
 import com.wcc.platform.domain.cms.pages.mentorship.MentorshipPage;
 import com.wcc.platform.domain.cms.pages.mentorship.MentorshipResourcesPage;
 import com.wcc.platform.domain.exceptions.PlatformInternalException;
@@ -45,15 +44,6 @@ public class MentorshipService {
     var data =
         new MentorshipResourcesPage(UUID.randomUUID(), resource.page(), resource.resources());
 
-    try {
-
-      repository.save(
-          data.id(), PageType.MENTORSHIP_RESOURCES, objectMapper.writeValueAsString(data));
-
-      return data;
-
-    } catch (JsonProcessingException e) {
-      throw new PlatformInternalException(e.getMessage(), e);
-    }
+    return repository.save(data);
   }
 }

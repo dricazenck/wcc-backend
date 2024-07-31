@@ -32,7 +32,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+    implementation("com.surrealdb:surrealdb-driver:0.1.0")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 

@@ -2,6 +2,7 @@ package com.wcc.platform.controller;
 
 import static com.wcc.platform.domain.cms.ApiResourcesFile.CODE_OF_CONDUCT;
 import static com.wcc.platform.factories.SetupFactories.createCodeOfConductPageTest;
+import static com.wcc.platform.factories.SetupFactories.createImageTest;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -25,7 +26,6 @@ import com.wcc.platform.domain.platform.SocialNetworkType;
 import com.wcc.platform.service.CmsService;
 import com.wcc.platform.utils.FileUtil;
 import java.util.List;
-import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -102,14 +102,17 @@ class AboutControllerTest {
             .jobTitle("Job title")
             .companyName("Company name")
             .memberType(MemberType.COLLABORATOR)
-            .images(
-                List.of(new Image(UUID.randomUUID(), "image.png", "alt image", ImageType.DESKTOP)))
+            .images(List.of(new Image("image.png", "alt image", ImageType.DESKTOP)))
             .network(List.of(new SocialNetwork(SocialNetworkType.LINKEDIN, "collaborator_link")))
             .build();
 
     var collaboratorPage =
         new CollaboratorPage(
-            new Page("collaborator_title", "collaborator_subtitle", "collaborator_desc"),
+            new Page(
+                "collaborator_title",
+                "collaborator_subtitle",
+                "collaborator_desc",
+                List.of(createImageTest())),
             new Contact(
                 "contact_title",
                 List.of(new SocialNetwork(SocialNetworkType.LINKEDIN, "page_link"))),

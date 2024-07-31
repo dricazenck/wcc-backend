@@ -10,5 +10,4 @@ springdoc:
     enabled: true
   paths-to-match: /api/**,
 
-surrealdb:
-  url:http://localhost:8000/sql:
+surrealdb.url:http://localhost:8000/sql:
