@@ -15,8 +15,6 @@ jobs:
     strategy:
       matrix:
         java-version: [ '21' ]
-    
-
 
     steps:
       - name: Checkout code
@@ -51,7 +49,7 @@ jobs:
         run: ./gradlew test jacocoTestReport
 
       - name: Pmd Check
-        run: ./gradlew pmdMain
+        run: ./gradlew pmdMain pmdTest
 
       - name: Jacoco Test Coverage Verification
         run: ./gradlew jacocoTestCoverageVerification

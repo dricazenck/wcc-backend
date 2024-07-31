@@ -2,6 +2,7 @@ package com.wcc.platform.controller;
 
 import static com.wcc.platform.domain.cms.ApiResourcesFile.CODE_OF_CONDUCT;
 import static com.wcc.platform.factories.SetupFactories.createCodeOfConductPageTest;
+import static com.wcc.platform.factories.SetupFactories.createImageTest;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -107,7 +108,11 @@ class AboutControllerTest {
 
     var collaboratorPage =
         new CollaboratorPage(
-            new Page("collaborator_title", "collaborator_subtitle", "collaborator_desc"),
+            new Page(
+                "collaborator_title",
+                "collaborator_subtitle",
+                "collaborator_desc",
+                List.of(createImageTest())),
             new Contact(
                 "contact_title",
                 List.of(new SocialNetwork(SocialNetworkType.LINKEDIN, "page_link"))),

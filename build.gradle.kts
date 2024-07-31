@@ -31,8 +31,9 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
-
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("com.surrealdb:surrealdb-driver:0.1.0")
+
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -81,6 +82,10 @@ val baseDir = project.projectDir
 tasks.named<Pmd>("pmdMain") {
     exclude("**/FileUtil.java")
     exclude("**/PlatformApplication.java")
+}
+
+tasks.named<Pmd>("pmdTest") {
+    ruleSetFiles = files("config/pmd/custom-ruleset-test.xml")
 }
 
 tasks.register("sonarQubeAnalysis") {
