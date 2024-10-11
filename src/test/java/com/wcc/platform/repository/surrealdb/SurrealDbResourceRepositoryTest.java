@@ -27,12 +27,13 @@ class SurrealDbResourceRepositoryTest {
   private final Class<ResourceContent> className = ResourceContent.class;
 
   @Mock private SyncSurrealDriver mockDriver;
-
+  @Mock private SurrealDdDriver service;
   @InjectMocks private SurrealDbResourceRepository repository;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
+    when(service.getDriver()).thenReturn(mockDriver);
   }
 
   @Test

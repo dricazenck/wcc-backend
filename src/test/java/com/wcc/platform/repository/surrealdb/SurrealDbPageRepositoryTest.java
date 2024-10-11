@@ -25,11 +25,14 @@ class SurrealDbPageRepositoryTest {
 
   @Mock private SyncSurrealDriver mockDriver;
 
+  @Mock private SurrealDdDriver service;
+
   @InjectMocks private SurrealDbPageRepository repository;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
+    when(service.getDriver()).thenReturn(mockDriver);
   }
 
   @Test

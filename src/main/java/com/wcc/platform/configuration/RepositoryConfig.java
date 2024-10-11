@@ -23,7 +23,7 @@ public class RepositoryConfig {
   }
 
   @Bean
-  public PageRepository getPageRepository(SurrealDdDriver service) {
+  public PageRepository getPageRepository(final SurrealDdDriver service) {
     return new SurrealDbPageRepository(service);
   }
 

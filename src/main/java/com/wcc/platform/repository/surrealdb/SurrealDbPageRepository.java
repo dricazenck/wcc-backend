@@ -16,7 +16,7 @@ public class SurrealDbPageRepository implements PageRepository {
   private final SurrealDdDriver service;
 
   @Autowired
-  public SurrealDbPageRepository(SurrealDdDriver service) {
+  public SurrealDbPageRepository(final SurrealDdDriver service) {
     this.service = service;
   }
 
