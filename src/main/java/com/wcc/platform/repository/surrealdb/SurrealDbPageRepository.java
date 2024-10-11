@@ -1,6 +1,5 @@
 package com.wcc.platform.repository.surrealdb;
 
-import com.surrealdb.driver.SyncSurrealDriver;
 import com.wcc.platform.repository.PageRepository;
 import java.util.Collection;
 import java.util.Map;
@@ -14,27 +13,29 @@ public class SurrealDbPageRepository implements PageRepository {
 
   /* default */ static final String TABLE = "page";
 
-  private final SyncSurrealDriver driver;
+  private final SurrealDdDriver service;
 
   @Autowired
-  public SurrealDbPageRepository(final SyncSurrealDriver driver) {
-    this.driver = driver;
+  public SurrealDbPageRepository(SurrealDdDriver service) {
+    this.service = service;
   }
 
   @Override
   public Object save(final Object entity) {
-    return driver.create(TABLE, entity);
+    return service.getDriver().create(TABLE, entity);
   }
 
   @Override
   public Collection<Object> findAll() {
-    return driver.select(TABLE, Object.class);
+    return service.getDriver().select(TABLE, Object.class);
   }
 
   @Override
   public Optional<Object> findById(final String id) {
     final var query =
-        driver.query("SELECT * FROM " + TABLE + " WHERE id = $id", Map.of("id", id), Object.class);
+        service
+            .getDriver()
+            .query("SELECT * FROM " + TABLE + " WHERE id = $id", Map.of("id", id), Object.class);
 
     if (query.isEmpty()) {
       return Optional.empty();
@@ -50,6 +51,6 @@ public class SurrealDbPageRepository implements PageRepository {
 
   @Override
   public void deleteById(final String id) {
-    driver.delete(id);
+    service.getDriver().delete(id);
   }
 }

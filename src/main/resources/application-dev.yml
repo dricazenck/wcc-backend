@@ -1,0 +1,14 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+file:
+  storage:
+    directory: /app/data
+
+surrealdb:
+  host: https://wcc-surrealdb.fly.dev
+  tls: true
+  port: 80
+  timeout-seconds: 300
