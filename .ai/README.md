@@ -10,9 +10,10 @@ any agent that reads repository context.
 ```
 .ai/
   skills/
-    commit.md       ← safe commit workflow (any agent)
-    pr-review.md    ← PR review workflow (any agent)
-  README.md         ← this file
+    commit.md               ← safe commit workflow (any agent)
+    pr-review.md            ← PR review workflow (any agent)
+    pre-commit-review.md    ← local pre-commit review workflow (any agent)
+  README.md                 ← this file
 ```
 
 ## How each agent uses these skills

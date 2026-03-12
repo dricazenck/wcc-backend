@@ -33,6 +33,18 @@ Full runbook: [`.ai/skills/pr-review.md`](.ai/skills/pr-review.md)
 - Post comments on exact changed lines, not just a summary
 - Java 21 idioms, Spring Boot conventions, Given-When-Then test names
 
+### pre-commit-review
+Local code review of staged and unstaged changes before committing.
+
+Full runbook: [`.ai/skills/pre-commit-review.md`](.ai/skills/pre-commit-review.md)
+
+**Quick reference:**
+- Review all local changes (staged + unstaged) before commit
+- Output overall summary + per-file line-level findings
+- Prioritise: regressions → security → data integrity → conventions → tests
+- Each finding must include risk, scenario, and suggested fix
+- Keep tone collaborative to keep contributors motivated
+
 ## Build commands
 
 ```bash

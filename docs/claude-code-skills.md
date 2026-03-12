@@ -10,7 +10,7 @@ The canonical skills live in **`.ai/skills/`** and are written without any tool-
 
 | Agent | Adapter location | Invoke with |
 |-------|-----------------|-------------|
-| **Claude Code** | `.claude/skills/<name>/SKILL.md` | `/commit`, `/pr-review` |
+| **Claude Code** | `.claude/skills/<name>/SKILL.md` | `/commit`, `/pr-review`, `/pre-commit-review` |
 | **OpenAI Codex** | `AGENTS.md` (repo root) | Natural language or slash commands |
 | **GitHub Copilot** | `.github/copilot-instructions.md` | Natural language in chat |
 | **Cursor** | `.cursor/rules/*.mdc` | Natural language or `@commit` rules |
@@ -80,6 +80,40 @@ Reviews a pull request using the GitHub CLI and posts inline comments directly o
 - Catches issues specific to this codebase's conventions
 - Posts comments where reviewers (and you) expect them — on the code lines, not just a summary
 - Keeps contributors motivated and learning
+
+---
+
+### `/pre-commit-review`
+
+**File:** `.claude/skills/pre-commit-review/SKILL.md`
+
+Reviews your local changes (staged and unstaged) before you commit them, providing detailed feedback.
+
+**What it does:**
+1. Gathers all local changes via `git diff HEAD` (staged + unstaged) and `git diff --staged`
+2. Analyzes changes with the same rigor as a PR review: security, regressions, data integrity, conventions, test coverage
+3. Outputs a structured review with:
+   - **Overall summary**: What changed, risks found, whether it's safe to commit
+   - **Per-file findings**: Line-level issues with severity, risk, scenario, and suggested fix
+   - **What looks good**: Positive feedback to keep you motivated
+4. Each finding includes a concrete code suggestion when feasible
+5. Applies the same stack-specific checks as `/pr-review` (Java 21, Spring Boot, React/TypeScript conventions)
+
+**How to use:**
+```bash
+# Make your changes, then before committing:
+/pre-commit-review
+
+# Or just ask:
+"Review my local changes"
+```
+
+**Why this matters:**
+- Catch issues **before** they enter your commit history
+- Get instant feedback on your code without waiting for CI or human review
+- Learn coding patterns and conventions as you write code
+- Fix problems locally before pushing — saves embarrassment and CI cycles
+- Builds confidence that your changes are solid before you commit
 
 ---
 
@@ -162,9 +196,11 @@ Use the feedback to fix the PR, then submit it to your team. You will arrive at 
 ```
 Write code
     ↓
+/pre-commit-review  →  Get instant feedback, fix issues locally
+    ↓
 /commit  →  Read the "why" Claude drafted — does it match your intent?
     ↓
-/pr-review  →  Address inline feedback before human review
+/pr-review  →  Self-review before requesting human review
     ↓
 Submit PR  →  Human review focuses on higher-level design
     ↓
@@ -180,18 +216,20 @@ This loop is especially powerful when learning a new language or framework. You 
 ```
 .ai/
   skills/
-    commit.md           ← canonical commit workflow (any agent)
-    pr-review.md        ← canonical PR review workflow (any agent)
-  README.md             ← agent compatibility table
+    commit.md               ← canonical commit workflow (any agent)
+    pr-review.md            ← canonical PR review workflow (any agent)
+    pre-commit-review.md    ← canonical pre-commit review workflow (any agent)
+  README.md                 ← agent compatibility table
 
-.claude/skills/         ← Claude Code adapters
+.claude/skills/             ← Claude Code adapters
   commit/SKILL.md
   pr-review/SKILL.md
+  pre-commit-review/SKILL.md
 
-AGENTS.md               ← OpenAI Codex entry point
+AGENTS.md                   ← OpenAI Codex entry point (references .ai/skills/)
 .github/
   copilot-instructions.md   ← GitHub Copilot instructions
-.cursor/rules/          ← Cursor rules
+.cursor/rules/              ← Cursor rules
   commit.mdc
   pr-review.mdc
 ```
