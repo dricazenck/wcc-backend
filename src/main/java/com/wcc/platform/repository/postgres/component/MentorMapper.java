@@ -62,7 +62,7 @@ public class MentorMapper {
         .bio(rs.getString(COLUMN_BIO))
         .calendlyLink(rs.getString(COL_CALENDLY_LINK))
         .acceptMale(rs.getBoolean(COL_ACCEPT_MALE))
-        .acceptPromotion(rs.getBoolean(COL_ACCEPT_PROMO))
+        .hasPromotion(rs.getBoolean(COL_ACCEPT_PROMO))
         .build();
   }
 

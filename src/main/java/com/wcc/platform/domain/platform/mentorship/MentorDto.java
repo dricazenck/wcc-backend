@@ -139,7 +139,7 @@ public class MentorDto extends MemberDto {
         .isWomen(getIsWomen())
         .calendlyLink(getCalendlyLink())
         .acceptMale(getAcceptMale())
-        .acceptPromotion(getAcceptPromotion())
+        .hasPromotion(getAcceptPromotion())
         .build();
   }
 
@@ -179,7 +179,7 @@ public class MentorDto extends MemberDto {
         .isWomen(mergeNullable(this.getIsWomen(), mentor.getIsWomen()))
         .calendlyLink(mergeString(this.getCalendlyLink(), mentor.getCalendlyLink()))
         .acceptMale(mergeNullable(this.getAcceptMale(), mentor.getAcceptMale()))
-        .acceptPromotion(mergeNullable(this.getAcceptPromotion(), mentor.getAcceptPromotion()))
+        .hasPromotion(mergeNullable(this.getAcceptPromotion(), mentor.getHasPromotion()))
         .build();
   }
 

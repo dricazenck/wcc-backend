@@ -195,7 +195,7 @@ public class PostgresMentorRepository implements MentorRepository {
         true,
         mentor.getCalendlyLink(),
         mentor.getAcceptMale(),
-        mentor.getAcceptPromotion());
+        mentor.getHasPromotion());
   }
 
   /**
@@ -218,7 +218,7 @@ public class PostgresMentorRepository implements MentorRepository {
         true,
         mentor.getCalendlyLink(),
         mentor.getAcceptMale(),
-        mentor.getAcceptPromotion(),
+        mentor.getHasPromotion(),
         mentorId);
   }
 }
