@@ -1,5 +1,6 @@
 package com.wcc.platform.service;
 
+import static com.wcc.platform.domain.platform.member.ProfileStatus.ACTIVE;
 import static com.wcc.platform.factories.SetupMentorFactories.createMemberProfilePictureTest;
 import static com.wcc.platform.factories.SetupMentorFactories.createResourceTest;
 import static com.wcc.platform.service.MentorshipService.CYCLE_CLOSED;
@@ -64,6 +65,7 @@ class MentorshipServiceRetrievalTest {
     var mentor = mock(Mentor.class, withSettings().defaultAnswer(RETURNS_DEEP_STUBS));
     var dto = mock(MentorDto.class);
     when(mentor.toDto()).thenReturn(dto);
+    when(mentor.getProfileStatus()).thenReturn(ACTIVE);
     when(mentorRepository.getAll()).thenReturn(List.of(mentor));
     when(profilePicRepo.findByMemberId(1L)).thenReturn(Optional.empty());
 
