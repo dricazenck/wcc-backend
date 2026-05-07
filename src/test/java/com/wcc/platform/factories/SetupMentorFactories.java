@@ -52,7 +52,9 @@ public class SetupMentorFactories {
             .email(email)
             .slackDisplayName(member.getSlackDisplayName())
             .country(member.getCountry())
+            .city("City")
             .images(member.getImages())
+            .memberTypes(member.getMemberTypes())
             .pronouns(null)
             .pronounCategory(null)
             .profileStatus(ProfileStatus.PENDING)
@@ -67,7 +69,8 @@ public class SetupMentorFactories {
                         new TechnicalAreaProficiency(
                             TechnicalArea.FRONTEND, ProficiencyLevel.BEGINNER)),
                     List.of(
-                        new LanguageProficiency(CodeLanguage.JAVASCRIPT, ProficiencyLevel.BEGINNER)),
+                        new LanguageProficiency(
+                            CodeLanguage.JAVASCRIPT, ProficiencyLevel.BEGINNER)),
                     List.of(MentorshipFocusArea.GROW_BEGINNER_TO_MID)))
             .menteeSection(
                 new MenteeSection(
@@ -110,7 +113,8 @@ public class SetupMentorFactories {
                     new TechnicalAreaProficiency(TechnicalArea.BACKEND, ProficiencyLevel.BEGINNER),
                     new TechnicalAreaProficiency(
                         TechnicalArea.FRONTEND, ProficiencyLevel.BEGINNER)),
-                List.of(new LanguageProficiency(CodeLanguage.JAVASCRIPT, ProficiencyLevel.BEGINNER)),
+                List.of(
+                    new LanguageProficiency(CodeLanguage.JAVASCRIPT, ProficiencyLevel.BEGINNER)),
                 List.of(MentorshipFocusArea.GROW_BEGINNER_TO_MID)))
         .menteeSection(
             new MenteeSection(
@@ -148,7 +152,8 @@ public class SetupMentorFactories {
                     new TechnicalAreaProficiency(TechnicalArea.BACKEND, ProficiencyLevel.BEGINNER),
                     new TechnicalAreaProficiency(
                         TechnicalArea.FRONTEND, ProficiencyLevel.BEGINNER)),
-                List.of(new LanguageProficiency(CodeLanguage.JAVASCRIPT, ProficiencyLevel.BEGINNER)),
+                List.of(
+                    new LanguageProficiency(CodeLanguage.JAVASCRIPT, ProficiencyLevel.BEGINNER)),
                 List.of(MentorshipFocusArea.GROW_BEGINNER_TO_MID)))
         .menteeSection(
             new MenteeSection(
@@ -166,7 +171,9 @@ public class SetupMentorFactories {
         .email(mentorDto.getEmail())
         .slackDisplayName(mentorDto.getSlackDisplayName())
         .country(mentorDto.getCountry())
+        .city(mentorDto.getCity())
         .images(mentorDto.getImages())
+        .memberTypes(List.of(MemberType.MENTOR))
         .pronouns(null)
         .pronounCategory(null)
         .profileStatus(mentorDto.getProfileStatus())
@@ -204,7 +211,9 @@ public class SetupMentorFactories {
         .email(mentorDto.getEmail())
         .slackDisplayName(mentorDto.getSlackDisplayName())
         .country(mentorDto.getCountry())
+        .city(mentorDto.getCity())
         .images(mentorDto.getImages())
+        .memberTypes(List.of(MemberType.MENTOR))
         .pronouns(null)
         .pronounCategory(null)
         .profileStatus(mentorDto.getProfileStatus())

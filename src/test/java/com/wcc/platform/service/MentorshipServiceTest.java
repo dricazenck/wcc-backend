@@ -3,7 +3,6 @@ package com.wcc.platform.service;
 import static com.wcc.platform.factories.SetupMentorFactories.createMentorDtoTest;
 import static com.wcc.platform.factories.SetupMentorFactories.createMentorTest;
 import static com.wcc.platform.factories.SetupMentorFactories.createUpdatedMentorTest;
-import static com.wcc.platform.factories.SetupUserAccountFactories.createUserAccountTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,11 +12,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.wcc.platform.domain.auth.UserAccount;
 import com.wcc.platform.domain.cms.attributes.PronounCategory;
 import com.wcc.platform.domain.cms.pages.mentorship.LongTermMentorship;
 import com.wcc.platform.domain.cms.pages.mentorship.MenteeSection;
@@ -66,7 +63,6 @@ class MentorshipServiceTest {
   private Mentor mentor;
   private Mentor updatedMentor;
   private MentorDto mentorDto;
-  private UserAccount userAccount;
   private MentorshipService service;
 
   public MentorshipServiceTest() {
@@ -79,17 +75,15 @@ class MentorshipServiceTest {
     mentor = createMentorTest();
     mentorDto = createMentorDtoTest(1L, MemberType.DIRECTOR);
     updatedMentor = createUpdatedMentorTest(mentor, mentorDto);
-    userAccount = createUserAccountTest(mentor);
     service =
-        spy(
-            new MentorshipService(
-                mentorRepository,
-                memberRepository,
-                cycleRepository,
-                userProvisionService,
-                profilePicRepo,
-                notificationService,
-                resourceService));
+        new MentorshipService(
+            mentorRepository,
+            memberRepository,
+            cycleRepository,
+            userProvisionService,
+            profilePicRepo,
+            notificationService,
+            resourceService);
   }
 
   @Test
@@ -230,7 +224,12 @@ class MentorshipServiceTest {
     when(mentor.getAcceptMale()).thenReturn(true);
     when(mentor.getAcceptPromotion()).thenReturn(false);
 
-    Member existingMember = Member.builder().id(999L).email("existing@test.com").build();
+    Member existingMember =
+        Member.builder()
+            .id(999L)
+            .email("existing@test.com")
+            .memberTypes(List.of(MemberType.MEMBER))
+            .build();
     when(memberRepository.findByEmail("existing@test.com")).thenReturn(Optional.of(existingMember));
     when(mentorRepository.create(any(Mentor.class))).thenReturn(mock(Mentor.class));
 
@@ -475,7 +474,7 @@ class MentorshipServiceTest {
   @Test
   @DisplayName(
       "Given active and pending mentors with a closed cycle, "
-          + "when getAllActiveMentors is called, then exception is throws for closed cycle")
+          + "when getAllActiveMentors is called, then only active mentors are returned")
   void shouldReturnOnlyActiveMentorsWhenCycleIsClosed() {
     var activeMentor = mock(Mentor.class);
     var pendingMentor = mock(Mentor.class);
@@ -487,8 +486,7 @@ class MentorshipServiceTest {
     when(activeMentorDto.getId()).thenReturn(1L);
     when(mentorRepository.getAll()).thenReturn(List.of(activeMentor, pendingMentor));
     when(profilePicRepo.findByMemberId(1L)).thenReturn(Optional.empty());
-    when(service.getCurrentCycle())
-        .thenReturn(MentorshipCycleEntity.builder().status(CycleStatus.CLOSED).build());
+    when(cycleRepository.findOpenCycle()).thenReturn(Optional.empty());
 
     List<MentorDto> result = service.getAllActiveMentors();
 
