@@ -46,7 +46,7 @@ public class MemberController {
     final List<Member> members = memberService.getAllMembers();
     return ResponseEntity.ok(members);
   }
-  
+
   /**
    * API to create member.
    *
