@@ -1,9 +1,14 @@
 # Stage 1: Build the application using Gradle and JDK 21 (Temurin)
-FROM gradle:8.7-jdk21-alpine AS build
+FROM gradle:8.7 AS build
 WORKDIR /app
 
-# Copy configuration files to cache dependencies
+# Copy configuration files first so dependency resolution is cached
+# independently of source changes
 COPY build.gradle.kts settings.gradle.kts ./
+
+# Warm the dependency cache. This layer is only rebuilt when the build
+# files change, so editing source no longer re-downloads dependencies.
+RUN gradle dependencies --no-daemon
 
 # Copy source code and build the application
 # Using the 'gradle' command directly since it's pre-installed

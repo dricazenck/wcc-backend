@@ -24,4 +24,14 @@ public class DevAdminSeederProperties {
   private boolean enabled;
   private String email;
   private String password;
+
+  /**
+   * When true, the admin account is linked to its own generated member (matching the admin email)
+   * instead of the default pre-existing member. Intended for the QA profile so the admin login
+   * returns a generic profile rather than seed-migration data. Defaults to false.
+   */
+  private boolean createOwnMember;
+
+  /** Display name for the admin's generated member when {@link #createOwnMember} is enabled. */
+  private String fullName;
 }

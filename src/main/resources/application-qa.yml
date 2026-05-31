@@ -1,0 +1,23 @@
+# QA profile: seeds role-specific accounts for local QA / integration testing.
+# Activate alongside another profile, e.g. SPRING_PROFILES_ACTIVE=docker,qa
+app:
+  seed:
+    admin:
+      create-own-member: true
+      full-name: QA Admin
+    users:
+      - email: mentorship-admin@wcc.dev
+        password: wcc-admin
+        full-name: QA Mentorship Admin
+        roles: [MENTORSHIP_ADMIN]
+        member-types: [MEMBER]
+      - email: mentor@wcc.dev
+        password: wcc-admin
+        full-name: QA Mentor
+        roles: [MENTOR]
+        member-types: [MENTOR]
+      - email: leader@wcc.dev
+        password: wcc-admin
+        full-name: QA Leader
+        roles: [LEADER]
+        member-types: [LEADER]
