@@ -24,17 +24,14 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Seeds default user accounts for local testing so the frontend can authenticate against real data.
- * The default admin is enabled by default and can be disabled with app.seed.admin.enabled=false.
- * Additional role-specific accounts (for example MENTORSHIP_ADMIN, MENTOR and LEADER) are seeded
- * from the app.seed.users configuration list, each linked to a member so login returns full profile
- * information.
+ * Seeds user accounts at application startup from the {@code app.seed.users} configuration list.
+ * Can be disabled with {@code app.seed.enabled=false}. Users holding the MENTOR role are
+ * provisioned with an active mentor profile so they appear in the admin portal's mentor list.
  */
 @Component
 public class DevAdminSeeder implements ApplicationRunner {
 
   private static final Logger LOG = LoggerFactory.getLogger(DevAdminSeeder.class);
-  private static final long ADMIN_MEMBER_ID = 1L;
 
   private final UserAccountRepository userAccountRepository;
   private final MemberRepository memberRepository;
@@ -46,12 +43,13 @@ public class DevAdminSeeder implements ApplicationRunner {
 
   /**
    * Constructs a DevAdminSeeder with repositories, mentorship service and seed configuration.
+   *
    * @param userAccountRepository repository for user accounts
    * @param memberRepository repository for members
    * @param mentorRepository repository for mentors, used to activate seeded mentor profiles
    * @param mentorshipService service used to provision mentor profiles for MENTOR-role users
-   * @param seedProperties configuration for the default admin seeder
-   * @param seedUsersProperties configuration for the additional seeded users
+   * @param seedProperties configuration for the seeder enabled flag
+   * @param seedUsersProperties configuration for the list of users to seed
    * @param passwordEncoder Argon2 password encoder
    */
   public DevAdminSeeder(
@@ -73,39 +71,15 @@ public class DevAdminSeeder implements ApplicationRunner {
 
   @Override
   public void run(final ApplicationArguments args) {
-    seedAdmin();
-    seedConfiguredUsers();
+    seedUsers();
   }
 
-  private void seedAdmin() {
+  private void seedUsers() {
     if (!seedProperties.isEnabled()) {
-      LOG.info("Admin seeder disabled (app.seed.admin.enabled=false)");
+      LOG.info("Admin seeder disabled (app.seed.enabled=false)");
       return;
     }
-    final Long memberId = resolveAdminMemberId();
-    seedUser(
-        seedProperties.getEmail(), seedProperties.getPassword(), List.of(RoleType.ADMIN), memberId);
-  }
-
-  /**
-   * Resolves the member linked to the admin account. By default the admin links to the pre-existing
-   * seed member ({@link #ADMIN_MEMBER_ID}); when {@code createOwnMember} is enabled (QA), a
-   * generic member matching the admin email is created instead.
-   *
-   * @return the member id to link to the admin account
-   */
-  private Long resolveAdminMemberId() {
-    if (!seedProperties.isCreateOwnMember()) {
-      return ADMIN_MEMBER_ID;
-    }
-    final var adminSeed = new SeedUser();
-    adminSeed.setEmail(seedProperties.getEmail());
-    adminSeed.setFullName(
-        StringUtils.hasText(seedProperties.getFullName())
-            ? seedProperties.getFullName()
-            : "QA Admin");
-    adminSeed.setRoles(List.of(RoleType.ADMIN));
-    return resolveMemberId(adminSeed);
+    seedConfiguredUsers();
   }
 
   private void seedConfiguredUsers() {
@@ -120,7 +94,7 @@ public class DevAdminSeeder implements ApplicationRunner {
   }
 
   /**
-   * Ensures the configured QA account exists with the expected password and roles. When the account
+   * Ensures the configured account exists with the expected password and roles. When the account
    * was already auto-provisioned (for example by mentor creation, which assigns a random password),
    * its password and roles are reset to the configured values so the credentials are predictable.
    *
@@ -183,7 +157,7 @@ public class DevAdminSeeder implements ApplicationRunner {
     final var member =
         Member.builder()
             .fullName(displayName(user))
-            .position("QA Seed User")
+            .position("QA Seed User " + user.getFullName())
             .email(email)
             .slackDisplayName(slackName(email))
             .country(new Country("GB", "United Kingdom"))
@@ -225,35 +199,5 @@ public class DevAdminSeeder implements ApplicationRunner {
 
   private String slackName(final String email) {
     return email.split("@", 2)[0].toLowerCase(Locale.ENGLISH);
-  }
-
-  /**
-   * Creates a user account with the given credentials and roles when one does not already exist for
-   * the email. Idempotent so it can run on every startup without duplicating accounts.
-   *
-   * @param email the login email of the account to seed
-   * @param password the plain-text password to hash and store
-   * @param roles the roles to assign to the account
-   * @param memberId the member to link, or null for a role-only account
-   */
-  private void seedUser(
-      final String email, final String password, final List<RoleType> roles, final Long memberId) {
-    if (!StringUtils.hasText(email) || !StringUtils.hasText(password)) {
-      LOG.warn("Seed user skipped: email or password not provided");
-      return;
-    }
-    if (CollectionUtils.isEmpty(roles)) {
-      LOG.warn("Seed user skipped, no roles provided: {}", email);
-      return;
-    }
-    if (userAccountRepository.findByEmail(email).isPresent()) {
-      LOG.info("Seed user already exists: {}", email);
-      return;
-    }
-
-    final var hash = passwordEncoder.encode(password);
-    final var user = new UserAccount(null, memberId, email, hash, roles, true);
-    userAccountRepository.create(user);
-    LOG.info("Seeded user: {} (roles: {})", email, roles);
   }
 }

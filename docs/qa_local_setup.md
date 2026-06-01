@@ -62,7 +62,7 @@ All accounts use the password **`wcc-admin`**.
 
 | Email                      | Role             | Member type | Notes                                            |
 |----------------------------|------------------|-------------|--------------------------------------------------|
-| `admin@wcc.dev`            | ADMIN            | —           | Linked to its own generic member *QA Admin*      |
+| `admin@wcc.dev`            | ADMIN            | MEMBER      | Linked to its own generated member *QA Admin*    |
 | `mentorship-admin@wcc.dev` | MENTORSHIP_ADMIN | MEMBER      | Can approve/reject mentors and manage matches    |
 | `mentor@wcc.dev`           | MENTOR           | MENTOR      | Has an **ACTIVE** mentor profile                 |
 | `leader@wcc.dev`           | LEADER           | LEADER      |                                                  |
@@ -151,8 +151,8 @@ docker compose -f docker/docker-compose.qa.yml up --build
   * creates a member matching each user's email,
   * creates the user account with the configured password and roles,
   * for users with the `MENTOR` role, creates a full mentor profile and activates it.
-* The default `admin@wcc.dev` account is configured separately under `app.seed.admin` in
-  the base `application.yml` and is seeded in every profile.
+* All four accounts (including admin) are defined in `app.seed.users`. The base
+  `application.yml` seeds just the admin; the `qa` profile adds the remaining roles.
 
 ## Adding or changing seeded users
 
@@ -182,10 +182,9 @@ Valid `roles` values: `ADMIN`, `MENTORSHIP_ADMIN`, `LEADER`, `MENTOR`, `MENTEE`,
 
 ## Notes and caveats
 
-* **Admin uses a generic profile.** In the QA profile, the `admin@wcc.dev` account is
-  linked to its own generated member (*QA Admin*, matching the admin email) via
-  `app.seed.admin.create-own-member: true`. Outside the QA profile the admin links to the
-  pre-existing seed member (id 1) instead — that default is unchanged.
+* **Admin uses a generated profile.** The `admin@wcc.dev` account is always linked to its
+  own generated member (*QA Admin*). Like all seeded accounts, it is defined as a list
+  entry under `app.seed.users` — not separately configured.
 * **Mentor is ACTIVE.** The seeded mentor is activated directly (no approval email is
   sent). To instead test the mentor approval flow, see the mentor `accept`/`reject`
   endpoints under `PATCH /api/platform/v1/mentors/{mentorId}/accept|reject` (requires the

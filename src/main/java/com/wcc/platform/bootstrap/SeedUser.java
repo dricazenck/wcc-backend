@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class SeedUser {
 
-  private boolean enabled = true;
+  private boolean enabled;
   private String email;
   private String password;
   private String fullName;
