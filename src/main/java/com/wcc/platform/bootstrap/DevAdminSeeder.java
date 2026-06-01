@@ -1,12 +1,20 @@
 package com.wcc.platform.bootstrap;
 
+import static com.wcc.platform.domain.cms.attributes.CodeLanguage.JAVASCRIPT;
+import static com.wcc.platform.domain.cms.attributes.ProficiencyLevel.BEGINNER;
+import static com.wcc.platform.domain.cms.attributes.ProficiencyLevel.EXPERT;
+import static com.wcc.platform.domain.cms.attributes.TechnicalArea.FULLSTACK;
+
 import com.wcc.platform.domain.auth.UserAccount;
 import com.wcc.platform.domain.cms.attributes.Country;
+import com.wcc.platform.domain.cms.attributes.MentorshipFocusArea;
 import com.wcc.platform.domain.cms.pages.mentorship.MenteeSection;
 import com.wcc.platform.domain.platform.member.Member;
 import com.wcc.platform.domain.platform.member.ProfileStatus;
+import com.wcc.platform.domain.platform.mentorship.LanguageProficiency;
 import com.wcc.platform.domain.platform.mentorship.Mentor;
 import com.wcc.platform.domain.platform.mentorship.Skills;
+import com.wcc.platform.domain.platform.mentorship.TechnicalAreaProficiency;
 import com.wcc.platform.domain.platform.type.RoleType;
 import com.wcc.platform.repository.MemberRepository;
 import com.wcc.platform.repository.MentorRepository;
@@ -32,6 +40,7 @@ import org.springframework.util.StringUtils;
 public class DevAdminSeeder implements ApplicationRunner {
 
   private static final Logger LOG = LoggerFactory.getLogger(DevAdminSeeder.class);
+  private static final int YEARS_EXPERIENCE = 5;
 
   private final UserAccountRepository userAccountRepository;
   private final MemberRepository memberRepository;
@@ -183,7 +192,12 @@ public class DevAdminSeeder implements ApplicationRunner {
             .slackDisplayName(slackName(user.getEmail()))
             .country(new Country("GB", "United Kingdom"))
             .profileStatus(ProfileStatus.PENDING)
-            .skills(new Skills(5, List.of(), List.of(), List.of()))
+            .skills(
+                new Skills(
+                    YEARS_EXPERIENCE,
+                    List.of(new TechnicalAreaProficiency(FULLSTACK, EXPERT)),
+                    List.of(new LanguageProficiency(JAVASCRIPT, BEGINNER)),
+                    List.of(MentorshipFocusArea.GROW_BEGINNER_TO_MID)))
             .spokenLanguages(List.of("English"))
             .bio("QA seeded mentor profile for testing the admin portal.")
             .menteeSection(
